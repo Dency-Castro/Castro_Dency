@@ -47,12 +47,14 @@ class UsersController extends Controller {
         $this->pagination->set_theme('default');
         
         $this->pagination->initialize(
-    $total_rows,
-    $records_per_page,
-    $page,
-    site_url('users/index') . '?q=' . urlencode($q) . '&page='
-);
+            $total_rows,
+            $records_per_page,
+            $page,
+            site_url() . '?q=' . urlencode($q)
+        );
+        $data['page'] = $this->pagination->paginate();
 
+        $this->call->view('users/index', $data);
     }
     //pasok
     function create()

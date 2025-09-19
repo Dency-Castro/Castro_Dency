@@ -11,10 +11,6 @@ class UsersController extends Controller {
     {
         parent::__construct();
     }
-    function welcome()
-    {
-        $this->call->view('Welcome');
-    }
     
     //pakita
     public function index()
@@ -49,15 +45,14 @@ class UsersController extends Controller {
         ]);
        
         $this->pagination->set_theme('default');
+        
         $this->pagination->initialize(
-            $total_rows,
-            $records_per_page,
-            $page,
-            site_url('users/index') . '?q=' . urlencode($q)
-        );
-        $data['page'] = $this->pagination->paginate();
+    $total_rows,
+    $records_per_page,
+    $page,
+    site_url('users/index') . '?q=' . urlencode($q) . '&page='
+);
 
-        $this->call->view('users/index', $data);
     }
     //pasok
     function create()

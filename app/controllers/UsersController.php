@@ -98,8 +98,9 @@ class UsersController extends Controller {
             $email= $this->io->post('email');
 
             $data = array(
-                'first_name' => $firstname,
+                
                 'last_name' => $lastname,
+                'first_name' => $firstname,
                 'email' => $email
             );
 

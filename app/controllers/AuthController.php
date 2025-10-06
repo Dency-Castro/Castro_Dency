@@ -3,39 +3,21 @@ class AuthController extends Controller
 {
 
     public function register()
-{
-    $this->call->library('auth');
+    {
+        $this->call->library('auth');
 
-    if ($this->io->method() == 'post') {
-        $username = trim($this->io->post('username'));
-        $password = $this->io->post('password');
-        $role = $this->io->post('role') ?? 'user';
+        if ($this->io->method() == 'post') {
+            $username = $this->io->post('username');
+            $password = $this->io->post('password');
+            $role = $this->io->post('role') ?? 'user';
 
-        // ✅ 1. Check if username already exists
-        $check = $this->db->query("SELECT * FROM users WHERE username = '$username'");
-        if ($check->num_rows > 0) {
-            echo "<script>alert('Username already exists. Please choose a different one.'); window.history.back();</script>";
-            exit;
+            if ($this->auth->register($username, $password, $role)) {
+                redirect('auth/login');
+            }
         }
 
-        // ✅ 2. Optional: password validation
-        $password_pattern = '/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$/';
-        if (!preg_match($password_pattern, $password)) {
-            echo "<script>alert('Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, and one number.'); window.history.back();</script>";
-            exit;
-        }
-
-        // ✅ 3. Proceed with registration if valid
-        if ($this->auth->register($username, $password, $role)) {
-            redirect('auth/login');
-        } else {
-            echo "<script>alert('Registration failed. Please try again.');</script>";
-        }
+        $this->call->view('auth/register');
     }
-
-    $this->call->view('auth/register');
-}
-
 
     public function login()
 {
